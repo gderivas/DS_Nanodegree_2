@@ -1,23 +1,69 @@
+# import libraries
+import pandas as pd
+from sqlalchemy import create_engine
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import classification_report
+import pickle
+import re
 import sys
 
 
 def load_data(database_filepath):
-    pass
+    # load data from database
+    engine = create_engine('sqlite:///'+database_filepath)
+    df = pd.read_sql_table('Messages', engine)
+    X = df.message.values
+    y = df.drop(['id','original','message','genre'],axis=1).values
+    category_names  = df.drop(['id','original','message','genre'],axis=1).columns
+    return X, y, category_names
 
 
 def tokenize(text):
-    pass
+    '''
+    Input: Message
+    Output: Tokenized Message
+    
+    '''
+    text = text.lower()
+    text = re.sub(r'[^a-zA-Z0-9]'," ",text)
+    tokens = word_tokenize(text)
+    
+    return tokens
+
 
 
 def build_model():
-    pass
+    pipeline = Pipeline([
+        ('vect', TfidfVectorizer(tokenizer=tokenize)),
+        ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    ])
+    
+    parameters = {'vect__stop_words': (None, 'english'),
+              #'clf__estimator__n_estimators': [50, 100, 200],
+              'clf__estimator__min_samples_split': [2, 3, 4],                  
+    }
+    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3)
+    
+    return cv
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    y_pred = model.predict(X_test)
+    for cat in range(y_test.shape[1]):
+        print(classification_report(Y_test[:,cat], y_pred[:,cat], labels = category_names))
     pass
 
 
 def save_model(model, model_filepath):
+    pickle.dump(model.best_estimator_,open(model_filepath,"wb"))
     pass
 
 
