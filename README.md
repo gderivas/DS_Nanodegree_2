@@ -1,5 +1,27 @@
 # Disaster Response Pipeline Project
 
+### Motivation
+
+Udacity Data Science Nanodegree - Second Project
+
+The aim is to build a Data Science pipeline to classify disaster response messages and comunicate results through a web app.
+
+### Files Structure
+
+The data folder includes:
+- Raw Data without preprocessing (dissaster_messages.csv & dissaster_categories.csv)
+- Preprocessing Script
+- Database with cleaned data
+
+The models folder includes:
+- ML pipeline script to tokenize and train the data 
+- Saved Model
+
+The app folder includes:
+- Flask Web App Script
+- Html Templates folder
+
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
