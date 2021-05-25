@@ -17,11 +17,16 @@ import sys
 
 
 def load_data(database_filepath):
+    '''
+    Load Data from Database to a Dataframe and prepare for ML-Model
+    IN: Database
+    OUT: Dependent, Independent Variables and Category Names
+    '''
     # load data from database
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('Messages', engine)
     X = df.message.values
-    y = df.drop(['id','original','message','genre'],axis=1).values
+    y = df.drop(['id','original','message','genre'],axis=1).values 
     category_names  = df.drop(['id','original','message','genre'],axis=1).columns
     return X, y, category_names
 
@@ -29,7 +34,7 @@ def load_data(database_filepath):
 def tokenize(text):
     '''
     Input: Message
-    Output: Tokenized Message
+    Output: Lower Tokenized Message excluding punctuation
     
     '''
     text = text.lower()
@@ -41,6 +46,10 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    Define Pipeline to preprocess and create estimators
+    '''
+    
     pipeline = Pipeline([
         ('vect', TfidfVectorizer(tokenizer=tokenize)),
         ('clf', MultiOutputClassifier(RandomForestClassifier()))
@@ -48,7 +57,7 @@ def build_model():
     
     parameters = {'vect__stop_words': (None, 'english'),
               #'clf__estimator__n_estimators': [50, 100, 200],
-              'clf__estimator__min_samples_split': [2, 3, 4],                  
+              #'clf__estimator__min_samples_split': [2, 3, 4],                  
     }
     cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3)
     
@@ -56,13 +65,19 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Predict on new values and plot the metrics
+    '''
     y_pred = model.predict(X_test)
-    for cat in range(y_test.shape[1]):
-        print(classification_report(Y_test[:,cat], y_pred[:,cat], labels = category_names))
+    for cat in range(Y_test.shape[1]):
+        print(classification_report(Y_test[:,cat], y_pred[:,cat]))
     pass
 
 
 def save_model(model, model_filepath):
+    '''
+    Save model to model_filepath picke file
+    '''
     pickle.dump(model.best_estimator_,open(model_filepath,"wb"))
     pass
 
