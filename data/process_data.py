@@ -15,7 +15,7 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-     '''
+    '''
     Clean Dataframe (df):
     - Separate categories text into different categories
     - Create new columns with categories names
@@ -43,7 +43,7 @@ def save_data(df, database_filename):
     Save cleaned Dataframe(df) to SQLlite Database (database_filename)
     '''
     engine = create_engine('sqlite:///'+database_filename)
-    df.to_sql('Messages', engine, index=False)
+    df.to_sql('Messages', engine, index=False,if_exists='replace')
     pass  
 
 
