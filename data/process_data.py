@@ -29,11 +29,12 @@ def clean_data(df):
     for column in categories_df:
         # set each value to be the last character of the string
         categories_df[column] = categories_df[column].str[-1] 
-        # convert column from string to numeric
-        categories_df[column].astype(int)
+        # convert column from string to boolean
+        categories_df[column].astype(bool)
     df.drop(['categories'],axis=1,inplace=True)
     df = pd.concat([df,categories_df],axis=1)
     df.drop_duplicates(inplace=True)
+    
     #df = df[df.related.isnull() == False]
     return df
 
