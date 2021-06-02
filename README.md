@@ -46,4 +46,6 @@ sklearn 0.19.1
 
 3. Go to http://0.0.0.0:3001/
 
+### Webapp example
 
+![Image: Webapp ](app/screenshot.png)
