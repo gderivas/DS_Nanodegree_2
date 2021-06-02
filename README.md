@@ -21,6 +21,17 @@ The app folder includes:
 - Flask Web App Script
 - Html Templates folder
 
+### Installation
+
+git clone https://github.com/gderivas/DS_Nanodegree_Project2
+
+**Required libraries**
+
+Pandas 0.23.3
+Sqlalchemy 1.2.19
+nltk 3.2.5
+sklearn 0.19.1
+
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -34,3 +45,5 @@ The app folder includes:
     `python run.py`
 
 3. Go to http://0.0.0.0:3001/
+
+
