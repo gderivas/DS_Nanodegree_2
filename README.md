@@ -49,3 +49,8 @@ sklearn 0.19.1
 ### Webapp example
 
 ![Image: Webapp ](app/screenshot.png)
+
+### Acknowledgments
+
+Udacity - Project organization
+Figure Eight - Raw Data
