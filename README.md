@@ -27,11 +27,12 @@ git clone https://github.com/gderivas/DS_Nanodegree_Project2
 
 **Required libraries**
 
-Pandas 0.23.3
-Sqlalchemy 1.2.19
-nltk 3.2.5
-sklearn 0.19.1
-
+Pandas 		0.23.3
+Sqlalchemy 	1.2.19
+nltk 		3.2.5
+sklearn 	0.19.1
+plotly 		2.0.15
+flask 		0.12.5
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
