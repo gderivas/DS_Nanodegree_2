@@ -10,6 +10,7 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+import numpy as np
 
 
 app = Flask(__name__)
@@ -43,6 +44,11 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    len_words = [len(message.split()) for message in df.message]
+    bandwith = 10
+    bins = np.arange(0,200+bandwith,bandwith)
+      
+    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -63,7 +69,58 @@ def index():
                     'title': "Genre"
                 }
             }
-        }
+        },
+        {
+  "data": [
+    {
+      "uid": "f4de1f",
+      "hole": 0.1,
+      "name": "Col2",
+      "pull": 0,
+      "type": "pie",
+      "domain": {
+        "x": [
+          0,
+          1
+        ],
+        "y": [
+          0,
+          1
+        ]
+      },
+      "marker": {
+        "colors": [
+          "#7fc97f",
+          "#beaed4",
+          "#fdc086",
+
+        ]
+      },
+      "textinfo": "label+value",
+      "hoverinfo": "all",
+      "labels": [
+        genre_names[0],
+        genre_names[1],
+        genre_names[2],
+
+      ],
+      "values": [
+        genre_counts[0],
+        genre_counts[1],
+        genre_counts[2],
+
+      ],
+
+    }
+  ],
+  "layout": {
+    "title": "Most Popular Content Management Systems",
+    "width": 800,
+    "height": 500,
+
+  },
+  "frames": []
+}
     ]
     
     # encode plotly graphs in JSON
